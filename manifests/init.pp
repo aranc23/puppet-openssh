@@ -1,8 +1,12 @@
-# @summary install openssh and configure using augeas
+# @summary install and configure openssh
 #
-# install and configure openssh using a light touch
-# will also handle restoring public/private host keys
-# known hosts, and authorized keys
+# Install openssh server and client packages, optionally configure the
+# server and client, and start the service.
+# Module will optionally manage the following:
+# ssh_known_hosts
+# authorized_keys
+# host key pairs
+# signed ssh host certs (ie: /etc/ssh/ssh_host_ecdsa-cert.pub)
 #
 # @param ssh_config
 #   ssh_config resources from augeasproviders_ssh (merged using hash deep)
@@ -17,7 +21,7 @@
 # @param manage_known_hosts
 #   manage the known hosts file, or not
 # @param known_hosts_path
-#   pull path to the known hosts files
+#   full path to the known hosts files
 # @param banner_path
 #   path to banner file
 # @param banner
@@ -38,16 +42,16 @@
 #   legacy host key management
 # @param ed25519_public_key
 #   legacy host key management
-# @param host_keys
-#   host key pairs, like ssh-rsa => { public => 'xxx', 'private' => 'yyy' }
 # @param ssh_authorized_keys
 #   hash of ssh_authorized_key resources to create
 # @param sshkeys
 #   ssh public keys to place in known hosts file, similar in structure to sshkey resource but supports markers
 # @param supported_key_types
-#   do not attempt to configure ssh host keys or known hosts entries unless the key type is in this list
+#   list of key types supported (or desired) for host keys and known hosts
 # @param service
 #   name of the service to start, enable, etc.
+# @param packages
+#   list of packages to install for the openssh server and client
 # @param service_ensure
 #   running, stopped or undefined
 # @param service_enable
