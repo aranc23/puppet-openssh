@@ -113,6 +113,7 @@ class openssh
     'ecdsa',
     'ed25519',
   ]] $supported_key_types,
+  Hash[String,String] $type_to_type,
   String $service,
   Variant[Enum['running','stopped'],Undef] $service_ensure,
   Variant[Boolean,Undef] $service_enable,
