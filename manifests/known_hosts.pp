@@ -26,9 +26,9 @@ class openssh::known_hosts
     $hash_known_hosts_template = @(HASHTEMPLATE)
     #! /bin/bash -e
     known_hosts=<%= scope['openssh::known_hosts_path'] %>
-    cp -f "${known_hosts_path}.unhashed" $known_hosts_path
+    cp -f "${known_hosts}.unhashed" $known_hosts
     ssh-keygen -H -f $known_hosts
-    rm -f "${known_hosts_path}.old"
+    rm -f "${known_hosts}.old"
     chmod 0644 $known_hosts
     | HASHTEMPLATE
     $hash_script = "${::openssh::known_hosts_path}.sh"
