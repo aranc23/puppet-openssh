@@ -15,9 +15,9 @@
 # @param ssh_etc
 #   where to put ssh configuration files (/etc/ssh)
 # @param sshd_config_path
-#   pull path to the sshs_config file, if undefined let the augeas provider decide
+#   full path to the sshd_config file, if undefined let the augeas provider decide
 # @param ssh_config_path
-#   pull path to the ssh_config file, if undefined let the augeas provider decide
+#   full path to the ssh_config file, if undefined let the augeas provider decide
 # @param manage_known_hosts
 #   manage the known hosts file, or not
 # @param known_hosts_path
