@@ -64,7 +64,7 @@ sshd_config resources from augeasproviders_ssh (merged using hash deep)
 
 Data type: `Stdlib::Absolutepath`
 
-where to put ssh configuration files (/etc/ssh)
+where to put ssh configuration files, including the known hosts and ssh key pairs
 
 Default value: `'/etc/ssh'`
 
@@ -72,13 +72,13 @@ Default value: `'/etc/ssh'`
 
 Data type: `Optional[Stdlib::Absolutepath]`
 
-pull path to the sshs_config file, if undefined let the augeas provider decide
+full path to the sshd_config file, if undefined let the augeas provider decide
 
 ##### `ssh_config_path`
 
 Data type: `Optional[Stdlib::Absolutepath]`
 
-pull path to the ssh_config file, if undefined let the augeas provider decide
+full path to the ssh_config file, if undefined let the augeas provider decide
 
 ##### `manage_known_hosts`
 
