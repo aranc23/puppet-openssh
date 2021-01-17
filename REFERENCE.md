@@ -96,6 +96,14 @@ manage the known hosts file, or not
 
 Default value: ``false``
 
+##### `hash_known_hosts`
+
+Data type: `Boolean`
+
+hash known hosts file
+
+Default value: ``true``
+
 ##### `known_hosts_path`
 
 Data type: `Stdlib::Absolutepath`
