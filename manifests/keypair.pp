@@ -2,7 +2,7 @@
 #
 # installs ssh host key pairs onto a system, possibly include a cert
 #
-# @param keytpe
+# @param keytype
 #   ssh key type, rsa, ecdsa, etc.
 # @param private_key
 #   private key as a string for the given keytype
