@@ -21,7 +21,7 @@
 # @param manage_known_hosts
 #   manage the known hosts file, or not
 # @param hash_known_hosts
-#   hash known hosts file
+#   if true, known hosts will be written to a file on the system, then hashed using ssh-keygen -H
 # @param known_hosts_path
 #   full path to the known hosts files
 # @param banner_path
