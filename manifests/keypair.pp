@@ -29,7 +29,7 @@
 #
 define openssh::keypair
 (
-  Enum['rsa1','rsa','dsa','ecdsa','ed25519'] $keytype,
+  Enum['rsa','dsa','ecdsa','ed25519'] $keytype,
   Variant[String,Undef] $private_key,
   Variant[String,Undef] $public_key,
   Variant[String,Undef] $public_cert = undef,
@@ -40,7 +40,6 @@ define openssh::keypair
 )
 {
   $string = $keytype ? {
-    'rsa1'    => '',
     'rsa'     => 'rsa_',
     'dsa'     => 'dsa_',
     'ecdsa'   => 'ecdsa_',
