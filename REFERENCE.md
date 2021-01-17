@@ -300,13 +300,13 @@ list of key types supported (or desired) for host keys and known hosts
 
 Default value: `['rsa','dsa','ecdsa','ed25519']`
 
-##### `services`
+##### `service`
 
-Data type: `Array[String]`
+Data type: `Variant[String,Array[String]]`
 
 list of services to start, enable, etc.
 
-Default value: `['sshd']`
+Default value: `'sshd'`
 
 ##### `packages`
 

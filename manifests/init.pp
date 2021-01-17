@@ -64,7 +64,7 @@
 #   ssh public keys to place in known hosts file, similar in structure to sshkey resource but supports markers
 # @param supported_key_types
 #   list of key types supported (or desired) for host keys and known hosts
-# @param services
+# @param service
 #   list of services to start, enable, etc.
 # @param packages
 #   list of packages to install for the openssh server and client
@@ -143,7 +143,7 @@ class openssh
     'ecdsa',
     'ed25519',
   ]] $supported_key_types = ['rsa','dsa','ecdsa','ed25519'],
-  Array[String] $services = ['sshd'],
+  Variant[String,Array[String]] $service = 'sshd',
   Variant[Enum['running','stopped'],Undef] $service_ensure = 'running',
   Variant[Boolean,Undef] $service_enable = true,
 )
