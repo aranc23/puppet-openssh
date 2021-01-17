@@ -62,8 +62,8 @@
 #   ssh public keys to place in known hosts file, similar in structure to sshkey resource but supports markers
 # @param supported_key_types
 #   list of key types supported (or desired) for host keys and known hosts
-# @param service
-#   name of the service to start, enable, etc.
+# @param services
+#   list of services to start, enable, etc.
 # @param packages
 #   list of packages to install for the openssh server and client
 # @param service_ensure
@@ -71,29 +71,31 @@
 # @param service_enable
 #   enable the service or not
 # @param type_to_type
-#   map used to turn full ssh key types into short names (ssh-rsa => rsa)
+#   map used to turn full ssh key types into short names (ssh-rsa => rsa), used internally do not modify
 # @example
 #   include openssh
 # @example README
 #   see the README for more complete examples
 class openssh
 (
+  # internal use only, defined in global.yaml
+  Hash[String,String] $type_to_type,
   # hash of ssh_config resources
-  Hash $ssh_config,
+  Hash $ssh_config = {},
   # hash of sshd_config resources
-  Hash $sshd_config,
+  Hash $sshd_config= {},
   Stdlib::Absolutepath $ssh_etc = '/etc/ssh',
-  Optional[Stdlib::Absolutepath] $sshd_config_path,
-  Optional[Stdlib::Absolutepath] $ssh_config_path,
+  Optional[Stdlib::Absolutepath] $sshd_config_path = undef,
+  Optional[Stdlib::Absolutepath] $ssh_config_path = undef,
   Boolean $manage_known_hosts = false,
-  Stdlib::Absolutepath $known_hosts_path,
+  Stdlib::Absolutepath $known_hosts_path = '/etc/ssh/ssh_known_hosts',
   Optional[Array[String]] $packages,
   # mode and group for ssh private keys
-  Stdlib::Filemode $private_key_mode,
-  Variant[String,Integer] $private_key_owner,
-  Variant[String,Integer] $private_key_group,
-  Stdlib::Absolutepath $banner_path,
-  Optional[String] $banner,
+  Stdlib::Filemode $private_key_mode = '0600',
+  Variant[String,Integer] $private_key_owner = 'root',
+  Variant[String,Integer] $private_key_group = 0,
+  Stdlib::Absolutepath $banner_path = '/etc/banner',
+  Optional[String] $banner = undef,
   # private and public keys
   Variant[String,Undef] $rsa_private_key = undef,
   Variant[String,Undef] $rsa_public_cert = undef,
@@ -107,7 +109,7 @@ class openssh
   Variant[String,Undef] $ed25519_private_key = undef,
   Variant[String,Undef] $ed25519_public_key = undef,
   Variant[String,Undef] $ed25519_public_cert = undef,
-  Hash $ssh_authorized_keys,
+  Hash $ssh_authorized_keys = {},
   Hash[String,Struct[{
     'host_aliases' => Optional[Array[String]],
     'type'         => Enum[
@@ -131,15 +133,14 @@ class openssh
     'key'          => String,
     'ensure'       => Optional[Enum['present','absent']],
     'marker'       => Optional[Enum['cert-authority','revoked']],
-  }]] $sshkeys,
+  }]] $sshkeys = {},
   Array[Enum[
     'rsa',
     'dsa',
     'ecdsa',
     'ed25519',
-  ]] $supported_key_types,
-  Hash[String,String] $type_to_type,
-  String $service,
+  ]] $supported_key_types = ['rsa','dsa','ecdsa','ed25519'],
+  Array[String] $services = ['sshd'],
   Variant[Enum['running','stopped'],Undef] $service_ensure = 'running',
   Variant[Boolean,Undef] $service_enable = true,
 )
