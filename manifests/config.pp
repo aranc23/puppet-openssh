@@ -8,7 +8,7 @@ class openssh::config
     'sshd_config',
     $openssh::sshd_config,
     { target => $openssh::sshd_config_path },
-   )
+  )
   # if a banner is specified, then create and configure it
   if($openssh::banner and length($openssh::banner) > 0) {
     file { $openssh::banner_path:
@@ -21,7 +21,7 @@ class openssh::config
       value => $openssh::banner_path,
     }
   }
-  
+
   $::openssh::supported_key_types.each |String $keytype| {
     openssh::keypair { "${::fqdn} ${keytype} key":
       keytype     => $keytype,

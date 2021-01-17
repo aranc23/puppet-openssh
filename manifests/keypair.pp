@@ -64,7 +64,7 @@ define openssh::keypair
   }
   if($public_key) {
     # if the key is the full string, use it as is
-    if($public_key =~ "^(ssh|ecdsa)-") {
+    if($public_key =~ '^(ssh|ecdsa)-') {
       $public_key_string = "${public_key}\n"
     }
     else {
@@ -85,5 +85,5 @@ define openssh::keypair
       group   => $group,
       content => "${public_cert}\n",
     }
-  }    
+  }
 }
