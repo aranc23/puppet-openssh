@@ -1,7 +1,5 @@
 # @summary create ssh_config resources
 #
-# A description of what this class does
-#
 class openssh::ssh_config
 (
 )
