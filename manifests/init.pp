@@ -20,6 +20,8 @@
 #   full path to the ssh_config file, if undefined let the augeas provider decide
 # @param manage_known_hosts
 #   manage the known hosts file, or not
+# @param hash_known_hosts
+#   hash known hosts file
 # @param known_hosts_path
 #   full path to the known hosts files
 # @param banner_path
@@ -88,6 +90,7 @@ class openssh
   Optional[Stdlib::Absolutepath] $sshd_config_path = undef,
   Optional[Stdlib::Absolutepath] $ssh_config_path = undef,
   Boolean $manage_known_hosts = false,
+  Boolean $hash_known_hosts = true,
   Stdlib::Absolutepath $known_hosts_path = '/etc/ssh/ssh_known_hosts',
   Optional[Array[String]] $packages,
   # mode and group for ssh private keys
