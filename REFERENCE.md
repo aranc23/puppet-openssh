@@ -7,7 +7,7 @@
 ### Classes
 
 * [`openssh`](#openssh): install and configure openssh
-* [`openssh::authorized_keys`](#opensshauthorized_keys): A short summary of the purpose of this class
+* [`openssh::authorized_keys`](#opensshauthorized_keys): calls create_rsources on the ssh_authorized_keys hash
 * [`openssh::config`](#opensshconfig): configure openssh, install ssh keys, etc.
 * [`openssh::install`](#opensshinstall): install packages as needed
 * [`openssh::known_hosts`](#opensshknown_hosts): manage hashed known hosts file
@@ -66,6 +66,8 @@ Data type: `Stdlib::Absolutepath`
 
 where to put ssh configuration files (/etc/ssh)
 
+Default value: `'/etc/ssh'`
+
 ##### `sshd_config_path`
 
 Data type: `Optional[Stdlib::Absolutepath]`
@@ -83,6 +85,8 @@ pull path to the ssh_config file, if undefined let the augeas provider decide
 Data type: `Boolean`
 
 manage the known hosts file, or not
+
+Default value: ``false``
 
 ##### `known_hosts_path`
 
@@ -124,37 +128,73 @@ probably root, some systems use odd owner/groups on private keys
 
 Data type: `Variant[String,Undef]`
 
-legacy host key management
+rsa private key
+
+Default value: ``undef``
 
 ##### `rsa_public_key`
 
 Data type: `Variant[String,Undef]`
 
-legacy host key management
+rsa public key
+
+Default value: ``undef``
+
+##### `rsa_public_cert`
+
+Data type: `Variant[String,Undef]`
+
+rsa public cert (signed public key)
+
+Default value: ``undef``
 
 ##### `dsa_private_key`
 
 Data type: `Variant[String,Undef]`
 
-legacy host key management
+dsa private key
+
+Default value: ``undef``
 
 ##### `dsa_public_key`
 
 Data type: `Variant[String,Undef]`
 
-legacy host key management
+dsa public key
+
+Default value: ``undef``
+
+##### `dsa_public_cert`
+
+Data type: `Variant[String,Undef]`
+
+dsa public cert (signed public key)
+
+Default value: ``undef``
 
 ##### `ecdsa_private_key`
 
 Data type: `Variant[String,Undef]`
 
-legacy host key management
+ecdsa private key
+
+Default value: ``undef``
 
 ##### `ecdsa_public_key`
 
 Data type: `Variant[String,Undef]`
 
-legacy host key management
+ecdsa public key
+
+Default value: ``undef``
+
+##### `ecdsa_public_cert`
+
+Data type: `Variant[String,Undef]`
+
+ecdsa public cert (signed public key)
+
+Default value: ``undef``
 
 ##### `ed25519_private_key`
 
@@ -162,11 +202,23 @@ Data type: `Variant[String,Undef]`
 
 legacy host key management
 
+Default value: ``undef``
+
 ##### `ed25519_public_key`
 
 Data type: `Variant[String,Undef]`
 
-legacy host key management
+ed25519 public key
+
+Default value: ``undef``
+
+##### `ed25519_public_cert`
+
+Data type: `Variant[String,Undef]`
+
+ed25519 public cert (signed public key)
+
+Default value: ``undef``
 
 ##### `ssh_authorized_keys`
 
@@ -232,11 +284,15 @@ Data type: `Variant[Enum['running','stopped'],Undef]`
 
 running, stopped or undefined
 
+Default value: `'running'`
+
 ##### `service_enable`
 
 Data type: `Variant[Boolean,Undef]`
 
 enable the service or not
+
+Default value: ``true``
 
 ##### `type_to_type`
 
@@ -246,15 +302,7 @@ map used to turn full ssh key types into short names (ssh-rsa => rsa)
 
 ### `openssh::authorized_keys`
 
-A description of what this class does
-
-#### Examples
-
-##### 
-
-```puppet
-include openssh::authorized_keys
-```
+calls create_rsources on the ssh_authorized_keys hash
 
 ### `openssh::config`
 
@@ -275,7 +323,7 @@ control the openssh service
 
 ### `openssh::ssh_config`
 
-A description of what this class does
+create ssh_config resources
 
 ## Defined types
 
@@ -299,7 +347,9 @@ openssh::keypair { 'my rsa key':
 
 The following parameters are available in the `openssh::keypair` defined type.
 
-##### `keytpe`
+##### `keytype`
+
+Data type: `Enum['rsa1','rsa','dsa','ecdsa','ed25519']`
 
 ssh key type, rsa, ecdsa, etc.
 
@@ -355,10 +405,4 @@ Data type: `Stdlib::Absolutepath`
 directory to put keys in, defaults to module default (/etc/ssh, most likely)
 
 Default value: `$::openssh::ssh_etc`
-
-##### `keytype`
-
-Data type: `Enum['rsa1','rsa','dsa','ecdsa','ed25519']`
-
-
 
