@@ -1,11 +1,5 @@
 # openssh
 
-Welcome to your new module. A short overview of the generated parts can be found
-in the [PDK documentation][1].
-
-The README template below provides a starting point with details about what
-information to include in your README.
-
 ## Table of Contents
 
 1. [Description](#description)
@@ -19,99 +13,90 @@ information to include in your README.
 
 ## Description
 
-Briefly tell users why they might want to use your module. Explain what your
-module does and what kind of problems users can solve with it.
+This module will install openssh server and client packages,
+optionally configure the server and client, and start the service.
 
-This should be a fairly short description helps the user decide if your module
-is what they want.
+The server and client are configured by passing ssh_config and
+sshd_config resources as defined by the
+herculesteam/augeasproviders_ssh module to the class parameters of the
+same name.
+
+The module can optionally configure the following elements of a
+typical openssh install as well:
+
+* ssh_known_hosts
+* authorized_keys
+* host key pairs
+* signed ssh host certs (ie: /etc/ssh/ssh_host_ecdsa-cert.pub)
 
 ## Setup
 
-### What openssh affects **OPTIONAL**
+### What openssh affects
 
-If it's obvious what your module touches, you can skip this section. For
-example, folks can probably figure out that your mysql_instance module affects
-their MySQL instances.
+Without additional class parameters passed to the main class this module
+will only install and start the service and clients.  Since the module
+uses augeas to configure sshd_config and ssh_config it will not
+completely replace an existing sshd_config or ssh_config file.
 
-If there's more that they should know about, though, this is the place to
-mention:
+If the module is used to manage the ssh_known_hosts file, it will be
+completely replaced.  This module does not use the sshkey type from
+the sshkeys_core module and instead uses a template to generate the
+ssh_known_hosts file.  This is largely because sshkey is innefficient
+with a large number of public keys and it doesn't support markers
+(@revoke, and @cert-authority).
 
-* Files, packages, services, or operations that the module will alter, impact,
-  or execute.
-* Dependencies that your module automatically installs.
-* Warnings or other important notices.
+The module uses the ssh_authorized_key type from sshkeys_core for
+managing authorized_keys, and therefore it will not completely replace
+an existing user's authorized keys file.
 
-### Setup Requirements **OPTIONAL**
+The module can handle installing ssh host key pairs, but does not
+generate them, nor does it attempt to protect the private key.  You
+would need something like eyaml or some secret injection service to
+securely manage private keys.
 
-If your module requires anything extra before setting up (pluginsync enabled,
-another module, etc.), mention it here.
+### Setup Requirements
 
-If your most recent release breaks compatibility or requires particular steps
-for upgrading, you might want to include an additional "Upgrading" section here.
+Modules required:
+* puppetlabs/stdlib
+* herculesteam/augeasproviders_core
+* herculesteam/augeasproviders_ssh
+* puppetlabs/sshkeys_core
 
-### Beginning with openssh
-
-The very basic steps needed for a user to get the module up and running. This
-can include setup steps, if necessary, or it can be an example of the most basic
-use of the module.
 
 ## Usage
 
-Include usage examples for common use cases in the **Usage** section. Show your
-users how to use your module to solve problems, and be sure to include code
-examples. Include three to five examples of the most important or common tasks a
-user can accomplish with your module. Show users how to accomplish more complex
-tasks that involve different types, classes, and functions working in tandem.
+Install packages and start the service:
 
+```
+include openssh
+```
+
+### class invocation
+
+``` puppet
+class { 'openssh':
+  ssh_config => {
+    'StrictHostKeyChecking' => {
+      value => 'yes',
+    }
+  },
+  sshd_config => {
+    'PermitRootLogin' => {
+      value => 'no',
+    },
+    # use the default
+    MaxAuthTries => {
+      ensure => absent,
+    }
+  }
+}
+```
+    
 ## Reference
 
-This section is deprecated. Instead, add reference information to your code as
-Puppet Strings comments, and then use Strings to generate a REFERENCE.md in your
-module. For details on how to add code comments and generate documentation with
-Strings, see the [Puppet Strings documentation][2] and [style guide][3].
-
-If you aren't ready to use Strings yet, manually create a REFERENCE.md in the
-root of your module directory and list out each of your module's classes,
-defined types, facts, functions, Puppet tasks, task plans, and resource types
-and providers, along with the parameters for each.
-
-For each element (class, defined type, function, and so on), list:
-
-* The data type, if applicable.
-* A description of what the element does.
-* Valid values, if the data type doesn't make it obvious.
-* Default value, if any.
-
-For example:
-
-```
-### `pet::cat`
-
-#### Parameters
-
-##### `meow`
-
-Enables vocalization in your cat. Valid options: 'string'.
-
-Default: 'medium-loud'.
-```
+see the REFERENCE.md
 
 ## Limitations
 
-In the Limitations section, list any incompatibilities, known issues, or other
-warnings.
+Needs match statement support.
 
-## Development
-
-In the Development section, tell other users the ground rules for contributing
-to your project and how they should submit their work.
-
-## Release Notes/Contributors/Etc. **Optional**
-
-If you aren't using changelog, put your release notes here (though you should
-consider using changelog). You can also add any additional sections you feel are
-necessary or important to include here. Please use the `##` header.
-
-[1]: https://puppet.com/docs/pdk/latest/pdk_generating_modules.html
-[2]: https://puppet.com/docs/puppet/latest/puppet_strings.html
-[3]: https://puppet.com/docs/puppet/latest/puppet_strings_style.html
