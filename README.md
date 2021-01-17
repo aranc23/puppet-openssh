@@ -103,6 +103,7 @@ class { 'openssh':
       key          => 'xxxyyy',
     },
   },
+  manage_known_hosts => true,
   # these are user keys
   ssh_authorized_keys => {
     user => 'root',

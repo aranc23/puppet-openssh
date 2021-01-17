@@ -13,7 +13,7 @@
 # @param sshd_config
 #   sshd_config resources from augeasproviders_ssh (merged using hash deep)
 # @param ssh_etc
-#   where to put ssh configuration files (/etc/ssh)
+#   where to put ssh configuration files, including the known hosts and ssh key pairs
 # @param sshd_config_path
 #   full path to the sshd_config file, if undefined let the augeas provider decide
 # @param ssh_config_path
