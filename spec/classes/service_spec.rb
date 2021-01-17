@@ -7,6 +7,10 @@ describe 'openssh::service' do
     context "on #{os}" do
       let(:facts) { os_facts }
 
+      let :pre_condition do
+        'include openssh'
+      end
+
       it { is_expected.to compile }
     end
   end
