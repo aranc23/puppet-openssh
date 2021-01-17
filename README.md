@@ -40,7 +40,7 @@ completely replace an existing sshd_config or ssh_config file.
 If the module is used to manage the ssh_known_hosts file, it will be
 completely replaced.  This module does not use the sshkey type from
 the sshkeys_core module and instead uses a template to generate the
-ssh_known_hosts file.  This is largely because sshkey is innefficient
+ssh_known_hosts file.  This is largely because sshkey is inefficient
 with a large number of public keys and it doesn't support markers
 (@revoke, and @cert-authority).
 
