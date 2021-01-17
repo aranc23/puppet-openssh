@@ -1,4 +1,4 @@
-# @summary calls create_rsources on the ssh_authorized_keys hash
+# @summary calls create_resources on the ssh_authorized_keys hash
 #
 class openssh::authorized_keys {
   create_resources(
