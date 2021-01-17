@@ -18,16 +18,12 @@ lookup_options:
 # when undefined, let the ssh_config and sshd_config types handle the location
 openssh::ssh_config: ~
 openssh::sshd_config: ~
-openssh::manage_known_hosts: false
 
 openssh::packages:
   - openssh
   - openssh-server
   - openssh-clients
 openssh::service: 'sshd'
-openssh::service_ensure: 'running'
-openssh::service_enable: true
-openssh::ssh_etc: '/etc/ssh'
 openssh::ssh_config_path: ~
 openssh::sshd_config_path: ~
 openssh::known_hosts_path: /etc/ssh/ssh_known_hosts
@@ -36,21 +32,6 @@ openssh::private_key_group: 0
 openssh::private_key_owner: 'root'
 openssh::banner_path: '/etc/banner'
 openssh::banner: ~
-openssh::do_rsa: true
-openssh::rsa_private_key: ~
-openssh::rsa_public_key: ~
-openssh::do_rsa1: false
-openssh::rsa1_private_key: ~
-openssh::rsa1_public_key: ~
-openssh::do_dsa: false
-openssh::dsa_private_key: ~
-openssh::dsa_public_key: ~
-openssh::do_ecdsa: true
-openssh::ecdsa_private_key: ~
-openssh::ecdsa_public_key: ~
-openssh::do_ed25519: true
-openssh::ed25519_private_key: ~
-openssh::ed25519_public_key: ~
 
 openssh::supported_key_types:
   - 'rsa'

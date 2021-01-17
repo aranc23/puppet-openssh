@@ -33,21 +33,29 @@
 # @param private_key_group
 #   probably root, some systems use odd owner/groups on private keys
 # @param rsa_private_key
-#   legacy host key management
+#   rsa private key
 # @param rsa_public_key
-#   legacy host key management
+#   rsa public key
+# @param rsa_public_cert
+#   rsa public cert (signed public key)
 # @param dsa_private_key
-#   legacy host key management
+#   dsa private key
 # @param dsa_public_key
-#   legacy host key management
+#   dsa public key
+# @param dsa_public_cert
+#   dsa public cert (signed public key)
 # @param ecdsa_private_key
-#   legacy host key management
+#   ecdsa private key
 # @param ecdsa_public_key
-#   legacy host key management
+#   ecdsa public key
+# @param ecdsa_public_cert
+#   ecdsa public cert (signed public key)
 # @param ed25519_private_key
 #   legacy host key management
 # @param ed25519_public_key
-#   legacy host key management
+#   ed25519 public key
+# @param ed25519_public_cert
+#   ed25519 public cert (signed public key)
 # @param ssh_authorized_keys
 #   hash of ssh_authorized_key resources to create
 # @param sshkeys
@@ -74,10 +82,10 @@ class openssh
   Hash $ssh_config,
   # hash of sshd_config resources
   Hash $sshd_config,
-  Stdlib::Absolutepath $ssh_etc,
+  Stdlib::Absolutepath $ssh_etc = '/etc/ssh',
   Optional[Stdlib::Absolutepath] $sshd_config_path,
   Optional[Stdlib::Absolutepath] $ssh_config_path,
-  Boolean $manage_known_hosts,
+  Boolean $manage_known_hosts = false,
   Stdlib::Absolutepath $known_hosts_path,
   Optional[Array[String]] $packages,
   # mode and group for ssh private keys
@@ -87,14 +95,18 @@ class openssh
   Stdlib::Absolutepath $banner_path,
   Optional[String] $banner,
   # private and public keys
-  Variant[String,Undef] $rsa_private_key,
-  Variant[String,Undef] $rsa_public_key,
-  Variant[String,Undef] $dsa_private_key,
-  Variant[String,Undef] $dsa_public_key,
-  Variant[String,Undef] $ecdsa_private_key,
-  Variant[String,Undef] $ecdsa_public_key,
-  Variant[String,Undef] $ed25519_private_key,
-  Variant[String,Undef] $ed25519_public_key,
+  Variant[String,Undef] $rsa_private_key = undef,
+  Variant[String,Undef] $rsa_public_cert = undef,
+  Variant[String,Undef] $rsa_public_key = undef,
+  Variant[String,Undef] $dsa_private_key = undef,
+  Variant[String,Undef] $dsa_public_key = undef,
+  Variant[String,Undef] $dsa_public_cert = undef,
+  Variant[String,Undef] $ecdsa_private_key = undef,
+  Variant[String,Undef] $ecdsa_public_key = undef,
+  Variant[String,Undef] $ecdsa_public_cert = undef,
+  Variant[String,Undef] $ed25519_private_key = undef,
+  Variant[String,Undef] $ed25519_public_key = undef,
+  Variant[String,Undef] $ed25519_public_cert = undef,
   Hash $ssh_authorized_keys,
   Hash[String,Struct[{
     'host_aliases' => Optional[Array[String]],
@@ -128,8 +140,8 @@ class openssh
   ]] $supported_key_types,
   Hash[String,String] $type_to_type,
   String $service,
-  Variant[Enum['running','stopped'],Undef] $service_ensure,
-  Variant[Boolean,Undef] $service_enable,
+  Variant[Enum['running','stopped'],Undef] $service_ensure = 'running',
+  Variant[Boolean,Undef] $service_enable = true,
 )
 {
   contain openssh::install
