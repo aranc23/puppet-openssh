@@ -16,7 +16,7 @@
 
 ### Defined types
 
-* [`openssh::keypair`](#opensshkeypair)
+* [`openssh::keypair`](#opensshkeypair): installs ssh host key pairs
 
 ## Classes
 
@@ -275,35 +275,46 @@ A description of what this class does
 
 ### `openssh::keypair`
 
-The openssh::keypair class.
+installs ssh host key pairs onto a system, possibly include a cert
+
+#### Examples
+
+##### 
+
+```puppet
+openssh::keypair { 'my rsa key':
+  keytype => 'rsa',
+  private_key => $some_key,
+  public_key => 'ssh-rsa ...',
+}
+```
 
 #### Parameters
 
 The following parameters are available in the `openssh::keypair` defined type.
 
-##### `keytype`
+##### `keytpe`
 
-Data type: `Enum['rsa1','rsa','dsa','ecdsa','ed25519']`
-
-
+ssh key type, rsa, ecdsa, etc.
 
 ##### `private_key`
 
 Data type: `Variant[String,Undef]`
 
-
+private key as a string for the given keytype
+do not store this in puppet without encryption, or use some other form of secret injection
 
 ##### `public_key`
 
 Data type: `Variant[String,Undef]`
 
-
+public key as a string, with or without the leading keytype and trailing comment
 
 ##### `public_cert`
 
 Data type: `Variant[String,Undef]`
 
-
+complete public cert, a signed version of the matching public key
 
 Default value: ``undef``
 
@@ -311,7 +322,7 @@ Default value: ``undef``
 
 Data type: `Stdlib::Filemode`
 
-
+mode to create the private key with, defaults to private_key_mode from module
 
 Default value: `$::openssh::private_key_mode`
 
@@ -319,7 +330,7 @@ Default value: `$::openssh::private_key_mode`
 
 Data type: `Variant[String,Integer]`
 
-
+group to use on the private key, defaults to private_key_group from module
 
 Default value: `$::openssh::private_key_group`
 
@@ -327,7 +338,7 @@ Default value: `$::openssh::private_key_group`
 
 Data type: `Variant[String,Integer]`
 
-
+owner of the private key file, defaults to private_key_owner
 
 Default value: `$::openssh::private_key_owner`
 
@@ -335,7 +346,13 @@ Default value: `$::openssh::private_key_owner`
 
 Data type: `Stdlib::Absolutepath`
 
-
+directory to put keys in, defaults to module default (/etc/ssh, most likely)
 
 Default value: `$::openssh::ssh_etc`
+
+##### `keytype`
+
+Data type: `Enum['rsa1','rsa','dsa','ecdsa','ed25519']`
+
+
 

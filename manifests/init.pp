@@ -66,7 +66,8 @@
 #   map used to turn full ssh key types into short names (ssh-rsa => rsa)
 # @example
 #   include openssh
-#
+# @example README
+#   see the README for more complete examples
 class openssh
 (
   # hash of ssh_config resources

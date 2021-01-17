@@ -6,7 +6,6 @@
 1. [Setup - The basics of getting started with openssh](#setup)
     * [What openssh affects](#what-openssh-affects)
     * [Setup requirements](#setup-requirements)
-    * [Beginning with openssh](#beginning-with-openssh)
 1. [Usage - Configuration options and additional functionality](#usage)
 1. [Limitations - OS compatibility, etc.](#limitations)
 1. [Development - Guide for contributing to the module](#development)
@@ -91,7 +90,28 @@ class { 'openssh':
   }
 }
 ```
-    
+
+### add a known hosts entry and an authorized key
+
+``` puppet
+class { 'openssh':
+  # these are host keys placed in /etc/ssh/ssh_known_hosts
+  sshkeys => {
+    'somehost' => {
+      host_aliases => ['somehost.example.com'],
+      type         => 'ssh-rsa',
+      key          => 'xxxyyy',
+    },
+  },
+  # these are user keys
+  ssh_authorized_keys => {
+    user => 'root',
+    type => 'ssh-rsa',
+    key  => 'AAAAB3Nza[...]qXfdaQ==',
+  },
+}
+```
+
 ## Reference
 
 see the REFERENCE.md
