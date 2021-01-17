@@ -38,6 +38,12 @@ Module will optionally manage the following:
 include openssh
 ```
 
+##### README
+
+```puppet
+see the README for more complete examples
+```
+
 #### Parameters
 
 The following parameters are available in the `openssh` class.
