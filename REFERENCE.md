@@ -54,11 +54,15 @@ Data type: `Hash`
 
 ssh_config resources from augeasproviders_ssh (merged using hash deep)
 
+Default value: `{}`
+
 ##### `sshd_config`
 
 Data type: `Hash`
 
 sshd_config resources from augeasproviders_ssh (merged using hash deep)
+
+Default value: `{}`
 
 ##### `ssh_etc`
 
@@ -74,11 +78,15 @@ Data type: `Optional[Stdlib::Absolutepath]`
 
 full path to the sshd_config file, if undefined let the augeas provider decide
 
+Default value: ``undef``
+
 ##### `ssh_config_path`
 
 Data type: `Optional[Stdlib::Absolutepath]`
 
 full path to the ssh_config file, if undefined let the augeas provider decide
+
+Default value: ``undef``
 
 ##### `manage_known_hosts`
 
@@ -94,11 +102,15 @@ Data type: `Stdlib::Absolutepath`
 
 full path to the known hosts files
 
+Default value: `'/etc/ssh/ssh_known_hosts'`
+
 ##### `banner_path`
 
 Data type: `Stdlib::Absolutepath`
 
 path to banner file
+
+Default value: `'/etc/banner'`
 
 ##### `banner`
 
@@ -106,11 +118,15 @@ Data type: `Optional[String]`
 
 string to put into the banner path, will not create the banner if this is left undefined
 
+Default value: ``undef``
+
 ##### `private_key_mode`
 
 Data type: `Stdlib::Filemode`
 
 the mode to use on private keys
+
+Default value: `'0600'`
 
 ##### `private_key_owner`
 
@@ -118,11 +134,15 @@ Data type: `Variant[String,Integer]`
 
 probably root, some systems use odd owner/groups on private keys
 
+Default value: `'root'`
+
 ##### `private_key_group`
 
 Data type: `Variant[String,Integer]`
 
 probably root, some systems use odd owner/groups on private keys
+
+Default value: `0`
 
 ##### `rsa_private_key`
 
@@ -226,6 +246,8 @@ Data type: `Hash`
 
 hash of ssh_authorized_key resources to create
 
+Default value: `{}`
+
 ##### `sshkeys`
 
 Data type: `Hash[String,Struct[{
@@ -255,6 +277,8 @@ Data type: `Hash[String,Struct[{
 
 ssh public keys to place in known hosts file, similar in structure to sshkey resource but supports markers
 
+Default value: `{}`
+
 ##### `supported_key_types`
 
 Data type: `Array[Enum[
@@ -266,11 +290,15 @@ Data type: `Array[Enum[
 
 list of key types supported (or desired) for host keys and known hosts
 
-##### `service`
+Default value: `['rsa','dsa','ecdsa','ed25519']`
 
-Data type: `String`
+##### `services`
 
-name of the service to start, enable, etc.
+Data type: `Array[String]`
+
+list of services to start, enable, etc.
+
+Default value: `['sshd']`
 
 ##### `packages`
 
@@ -298,7 +326,7 @@ Default value: ``true``
 
 Data type: `Hash[String,String]`
 
-map used to turn full ssh key types into short names (ssh-rsa => rsa)
+map used to turn full ssh key types into short names (ssh-rsa => rsa), used internally do not modify
 
 ### `openssh::authorized_keys`
 
