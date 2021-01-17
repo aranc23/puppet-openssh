@@ -1,5 +1,32 @@
-# keypair.pp for openssh::keypair
-
+# @summary installs ssh host key pairs
+#
+# installs ssh host key pairs onto a system, possibly include a cert
+#
+# @param keytpe
+#   ssh key type, rsa, ecdsa, etc.
+# @param private_key
+#   private key as a string for the given keytype
+#   do not store this in puppet without encryption, or use some other form of secret injection
+# @param public_key
+#   public key as a string, with or without the leading keytype and trailing comment
+# @param public_cert
+#   complete public cert, a signed version of the matching public key
+# @param mode
+#   mode to create the private key with, defaults to private_key_mode from module
+# @param group
+#   group to use on the private key, defaults to private_key_group from module
+# @param owner
+#   owner of the private key file, defaults to private_key_owner
+# @param ssh_etc
+#   directory to put keys in, defaults to module default (/etc/ssh, most likely)
+#
+# @example
+#   openssh::keypair { 'my rsa key':
+#     keytype => 'rsa',
+#     private_key => $some_key,
+#     public_key => 'ssh-rsa ...',
+#   }
+#
 define openssh::keypair
 (
   Enum['rsa1','rsa','dsa','ecdsa','ed25519'] $keytype,
