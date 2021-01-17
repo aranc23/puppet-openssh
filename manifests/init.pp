@@ -3,10 +3,10 @@
 # Install openssh server and client packages, optionally configure the
 # server and client, and start the service.
 # Module will optionally manage the following:
-# ssh_known_hosts
-# authorized_keys
-# host key pairs
-# signed ssh host certs (ie: /etc/ssh/ssh_host_ecdsa-cert.pub)
+# * ssh_known_hosts
+# * authorized_keys
+# * host key pairs
+# * signed ssh host certs (ie: /etc/ssh/ssh_host_ecdsa-cert.pub)
 #
 # @param ssh_config
 #   ssh_config resources from augeasproviders_ssh (merged using hash deep)
@@ -26,6 +26,12 @@
 #   path to banner file
 # @param banner
 #   string to put into the banner path, will not create the banner if this is left undefined
+# @param private_key_mode
+#   the mode to use on private keys
+# @param private_key_owner
+#   probably root, some systems use odd owner/groups on private keys
+# @param private_key_group
+#   probably root, some systems use odd owner/groups on private keys
 # @param rsa_private_key
 #   legacy host key management
 # @param rsa_public_key
@@ -56,6 +62,8 @@
 #   running, stopped or undefined
 # @param service_enable
 #   enable the service or not
+# @param type_to_type
+#   map used to turn full ssh key types into short names (ssh-rsa => rsa)
 # @example
 #   include openssh
 #
