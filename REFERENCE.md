@@ -100,7 +100,7 @@ Default value: ``false``
 
 Data type: `Boolean`
 
-hash known hosts file
+if true, known hosts will be written to a file on the system, then hashed using ssh-keygen -H
 
 Default value: ``true``
 
