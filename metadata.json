@@ -18,24 +18,24 @@
         "7"
       ]
     },
-    {
-      "operatingsystem": "OracleLinux",
-      "operatingsystemrelease": [
-        "7"
-      ]
-    },
+    // {
+    //   "operatingsystem": "OracleLinux",
+    //   "operatingsystemrelease": [
+    //     "7"
+    //   ]
+    // },
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
         "8"
       ]
     },
-    {
-      "operatingsystem": "Scientific",
-      "operatingsystemrelease": [
-        "7"
-      ]
-    },
+    // {
+    //   "operatingsystem": "Scientific",
+    //   "operatingsystemrelease": [
+    //     "7"
+    //   ]
+    // },
     {
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
