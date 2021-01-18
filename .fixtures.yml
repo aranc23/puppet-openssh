@@ -4,3 +4,6 @@
 fixtures:
   forge_modules:
      stdlib: "puppetlabs/stdlib"
+     augeasproviders_ssh: "herculesteam/augeasproviders_ssh"
+     augeasproviders_core: "herculesteam/augeasproviders_core"
+     sshkeys_core: "puppetlabs/sshkeys_core"
