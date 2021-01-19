@@ -83,15 +83,34 @@ describe 'openssh' do
             :supported_key_types => ['rsa','dsa','ecdsa','ed25519'],
           }
         }
-        it { is_expected.to contain_openssh__keypair("test.example.com rsa key").with(:keytype => 'rsa') }
-        it { is_expected.to contain_openssh__keypair("test.example.com dsa key").with(:keytype => 'dsa') }
-        it { is_expected.to contain_openssh__keypair("test.example.com ecdsa key").with(:keytype => 'ecdsa') }
-        it { is_expected.to contain_openssh__keypair("test.example.com ed25519 key").with(:keytype => 'ed25519') }
         case os_facts[:osfamily]
         when 'RedHat'
-          it { is_expected.to contain_file("/etc/ssh/ssh_host_rsa_key").with('mode' => '0640','owner' => 'root', 'group' => 'ssh-keys','content' => 'some key') }
+          case os_facts[:operatingsystemmajrelease]
+          when ['5','6']
+            # old red hats
+            withs = {
+              'mode'  => '0600',
+              'owner' => 'root',
+              'group' => 0,
+            }
+          else
+            # newer red hats
+            withs = {
+              'mode'  => '0640',
+              'owner' => 'root',
+              'group' => 'ssh_keys',
+            }
+          end
         else
-          it { is_expected.to contain_file("/etc/ssh/ssh_host_rsa_key").with('mode' => '0600','owner' => 'root', 'group' => 0,'content' => 'some key') }
+          # all the other hats
+          withs = {
+            'mode'  => '0600',
+            'owner' => 'root',
+            'group' => 0,
+          }
+        end
+        ['rsa','dsa','ecdsa','ed25519'].each do |keytype|
+          it { is_expected.to contain_openssh__keypair("test.example.com #{keytype} key").with(withs.merge({'keytype' => keytype}))}
         end
       end
     end
