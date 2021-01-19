@@ -87,6 +87,12 @@ describe 'openssh' do
         it { is_expected.to contain_openssh__keypair("test.example.com dsa key").with(:keytype => 'dsa') }
         it { is_expected.to contain_openssh__keypair("test.example.com ecdsa key").with(:keytype => 'ecdsa') }
         it { is_expected.to contain_openssh__keypair("test.example.com ed25519 key").with(:keytype => 'ed25519') }
+        case os_facts[:osfamily]
+        when 'RedHat'
+          it { is_expected.to contain_file("/etc/ssh/ssh_host_rsa_key").with('mode' => '0640','owner' => 'root', 'group' => 'ssh-keys','content' => 'some key') }
+        else
+          it { is_expected.to contain_file("/etc/ssh/ssh_host_rsa_key").with('mode' => '0600','owner' => 'root', 'group' => 0,'content' => 'some key') }
+        end
       end
     end
   end

@@ -1,0 +1,3 @@
+---
+openssh::private_key_mode: '0640'
+openssh::private_key_group: 'ssh_keys'
