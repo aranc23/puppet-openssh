@@ -1,5 +1,5 @@
 ---
 openssh::supported_key_types:
-   - 'ssh-rsa'
+   - 'rsa'
 openssh::private_key_mode: '0600'
 openssh::private_key_group: 0

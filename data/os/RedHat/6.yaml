@@ -1,6 +1,6 @@
 ---
 openssh::supported_key_types:
-  - 'ssh-dss'
-  - 'ssh-rsa'
+  - 'dsa'
+  - 'rsa'
 openssh::private_key_mode: '0600'
 openssh::private_key_group: 0
