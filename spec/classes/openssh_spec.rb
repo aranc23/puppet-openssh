@@ -11,6 +11,12 @@ describe 'openssh' do
     it { is_expected.to contain_class('openssh::authorized_keys') }
     it { is_expected.to contain_class('openssh::ssh_config') }
     it { is_expected.to contain_class('openssh::known_hosts') }
+    it { is_expected.to contain_file('/etc/ssh/validate_public_cert.sh').with('owner' => 'root',
+                                                                              'group' => 0,
+                                                                              'mode' => '0750',
+                                                                              'source' => 'puppet:///modules/openssh/validate_public_cert.sh'
+                                                                             )
+    }
   end
   context "configure sshd and ssh client" do
     let(:params) {

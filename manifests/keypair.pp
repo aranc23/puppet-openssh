@@ -79,10 +79,11 @@ define openssh::keypair
   }
   if($public_cert) {
     file { "${ssh_etc}/${key}-cert.pub":
-      owner   => $owner,
-      mode    => '0644',
-      group   => $group,
-      content => "${public_cert}\n",
+      owner        => $owner,
+      mode         => '0644',
+      group        => $group,
+      content      => "${public_cert}\n",
+      validate_cmd => "${ssh_etc}/validate_public_cert.sh ${ssh_etc}/${key}.pub %",
     }
   }
 }
