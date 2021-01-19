@@ -73,7 +73,7 @@ define openssh::keypair
     file { "${ssh_etc}/${key}.pub":
       owner   => $owner,
       mode    => '0644',
-      group   => $group,
+      group   => 0,
       content => $public_key_string,
     }
   }
@@ -81,7 +81,7 @@ define openssh::keypair
     file { "${ssh_etc}/${key}-cert.pub":
       owner        => $owner,
       mode         => '0644',
-      group        => $group,
+      group        => 0,
       content      => "${public_cert}\n",
       validate_cmd => "${ssh_etc}/validate_public_cert.sh ${ssh_etc}/${key}.pub %",
     }

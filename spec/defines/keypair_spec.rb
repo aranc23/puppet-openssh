@@ -67,8 +67,8 @@ describe 'openssh::keypair' do
       end
       
       it { is_expected.to contain_file("/opt/ssh/etc/#{keyfile}").with('mode' => '0666','owner' => 'ssh-key', 'group' => 5,'content' => 'private key') }
-      it { is_expected.to contain_file("/opt/ssh/etc/#{keyfile}.pub").with('mode' => '0644','owner' => 'ssh-key', 'group' => 5).with_content(public_key) }
-      it { is_expected.to contain_file("/opt/ssh/etc/#{keyfile}-cert.pub").with('mode' => '0644','owner' => 'ssh-key', 'group' => 5).with_content("public cert\n") }
+      it { is_expected.to contain_file("/opt/ssh/etc/#{keyfile}.pub").with('mode' => '0644','owner' => 'ssh-key', 'group' => 0).with_content(public_key) }
+      it { is_expected.to contain_file("/opt/ssh/etc/#{keyfile}-cert.pub").with('mode' => '0644','owner' => 'ssh-key', 'group' => 0).with_content("public cert\n") }
     end
   end
   on_supported_os.each do |os, os_facts|
