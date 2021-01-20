@@ -1,0 +1,6 @@
+# managed by puppet, do not edit
+<% ['hash','sha256','sha1','key'].each { |key|
+if @krl.has_key?(key) then
+@krl[key].each { |p| -%>
+<%= key %>: <%= p %>
+<% } end } -%>

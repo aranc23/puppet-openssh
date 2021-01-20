@@ -4,6 +4,12 @@ require 'spec_helper'
 
 describe 'openssh' do
   context 'os non-specific' do
+    # let(:params) do
+    #   {
+    #     manage_krl: False,
+    #   }
+    # end
+
     it { is_expected.to have_class_count(8) }
     it { is_expected.to contain_class('openssh::install') }
     it { is_expected.to contain_class('openssh::config') }
@@ -17,6 +23,24 @@ describe 'openssh' do
                                                                            'mode'   => '0750',
                                                                            'source' => 'puppet:///modules/openssh/validate_public_cert.sh')
     }
+    it { is_expected.not_to contain_file('/etc/ssh/krl') }
+    it { is_expected.not_to contain_file('/etc/ssh/krl.txt') }
+    it { is_expected.not_to contain_sshd_config('RevokedKeys') }
+    it { is_expected.not_to contain_exec('ssh-keygen -k -f /etc/ssh/krl /etc/ssh/krl.txt') }
+  end
+  context 'manage the krl' do
+    let(:params) do
+      {
+        manage_krl: true,
+        krl_path: '/etc/ssh/revoked',
+        krl: { 'hash' => ['magic'] },
+      }
+    end
+
+    it { is_expected.to contain_file('/etc/ssh/revoked') }
+    it { is_expected.to contain_file('/etc/ssh/revoked.txt') }
+    it { is_expected.to contain_sshd_config('RevokedKeys') }
+    it { is_expected.to contain_exec('ssh-keygen -k -f /etc/ssh/revoked /etc/ssh/revoked.txt') }
   end
   context 'configure sshd and ssh client' do
     let(:params) do

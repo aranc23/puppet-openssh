@@ -146,17 +146,29 @@ class openssh
   Variant[String,Array[String]] $service = 'sshd',
   Variant[Enum['running','stopped'],Undef] $service_ensure = 'running',
   Variant[Boolean,Undef] $service_enable = true,
+  Boolean $manage_krl = false,
+  Struct[
+    {
+      'sha256' => Optional[Array[String]],
+      'sha1'   => Optional[Array[String]],
+      'hash'   => Optional[Array[String]],
+      'key'    => Optional[Array[String]],
+    }
+  ] $krl = {},
+  Stdlib::Absolutepath $krl_path = '/etc/ssh/krl',
 )
 {
   contain openssh::install
-  contain openssh::config
-  contain openssh::service
   contain openssh::known_hosts
-  contain openssh::ssh_config
+  contain openssh::config
+  contain openssh::krl
   contain openssh::authorized_keys
+  contain openssh::service
+  contain openssh::ssh_config
   Class['::openssh::install']
   -> Class['::openssh::known_hosts']
   -> Class['::openssh::config']
+  -> Class['::openssh::krl']
   -> Class['::openssh::authorized_keys']
   ~> Class['::openssh::service']
   include openssh::ssh_config
