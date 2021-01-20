@@ -157,7 +157,7 @@ class openssh
   Class['::openssh::install']
   -> Class['::openssh::known_hosts']
   -> Class['::openssh::config']
+  -> Class['::authorized_keys']
   ~> Class['::openssh::service']
   include openssh::ssh_config
-  include openssh::authorized_keys
 }
