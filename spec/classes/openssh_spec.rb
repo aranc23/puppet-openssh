@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe 'openssh' do
-  context "os non-specific" do
+  context 'os non-specific' do
     it { is_expected.to have_class_count(7) }
     it { is_expected.to contain_class('openssh::install') }
     it { is_expected.to contain_class('openssh::config') }
@@ -18,7 +18,7 @@ describe 'openssh' do
                                                                              )
     }
   end
-  context "configure sshd and ssh client" do
+  context 'configure sshd and ssh client' do
     let(:params) {
       {
         :sshd_config => {
@@ -36,7 +36,7 @@ describe 'openssh' do
     it { is_expected.to contain_sshd_config('Protocol') }
     it { is_expected.to contain_ssh_config('HashKnownHosts') }
   end
-  context "create banner" do
+  context 'create banner' do
     let(:params) {
       {
         :banner_path => '/etc/ssh/banner',
@@ -64,7 +64,7 @@ describe 'openssh' do
           |p| it { is_expected.to contain_package(p) }
         end
       end
-      context "manage host keys" do
+      context 'manage host keys' do
         let(:node) { 'test.example.com' }
         let(:params) {
           {
