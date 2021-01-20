@@ -9,7 +9,7 @@ describe 'openssh::authorized_keys' do
       let :pre_condition do
         'include openssh'
       end
- 
+
       it { is_expected.to compile }
     end
   end
