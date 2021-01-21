@@ -74,6 +74,14 @@
 #   enable the service or not
 # @param type_to_type
 #   map used to turn full ssh key types into short names (ssh-rsa => rsa), used internally do not modify
+# @param manage_krl
+#   create a krl fill and process it with ssh-keygen, also sets RevokedKeys paramter
+# @param krl_path
+#   path to krl file to create
+# @param krl
+#   data structure matching a modern krl input file
+#   some versions of openssh do not support sha256, however
+# 
 # @example
 #   include openssh
 # @example README

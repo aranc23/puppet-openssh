@@ -113,6 +113,22 @@ class { 'openssh':
 }
 ```
 
+### manage krl
+
+``` puppet
+class { 'openssh':
+  manage_krl => true,
+  krl => {
+    key => [
+      'ssh-rsa somekey',
+    ],
+    hash => [
+      'SHA1:somehash',
+    ],
+  },
+}
+```
+
 ## Reference
 
 see the REFERENCE.md

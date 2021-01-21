@@ -7,10 +7,11 @@
 ### Classes
 
 * [`openssh`](#openssh): install and configure openssh
-* [`openssh::authorized_keys`](#opensshauthorized_keys): calls create_rsources on the ssh_authorized_keys hash
+* [`openssh::authorized_keys`](#opensshauthorized_keys): calls create_resources on the ssh_authorized_keys hash
 * [`openssh::config`](#opensshconfig): configure openssh, install ssh keys, etc.
 * [`openssh::install`](#opensshinstall): install packages as needed
 * [`openssh::known_hosts`](#opensshknown_hosts): manage hashed known hosts file
+* [`openssh::krl`](#opensshkrl): create a kernel revocation list, configure openssh to use it
 * [`openssh::service`](#opensshservice): control the openssh service
 * [`openssh::ssh_config`](#opensshssh_config): create ssh_config resources
 
@@ -336,9 +337,41 @@ Data type: `Hash[String,String]`
 
 map used to turn full ssh key types into short names (ssh-rsa => rsa), used internally do not modify
 
+##### `manage_krl`
+
+Data type: `Boolean`
+
+create a krl fill and process it with ssh-keygen, also sets RevokedKeys paramter
+
+Default value: ``false``
+
+##### `krl_path`
+
+Data type: `Stdlib::Absolutepath`
+
+path to krl file to create
+
+Default value: `'/etc/ssh/krl'`
+
+##### `krl`
+
+Data type: `Struct[
+    {
+      'sha256' => Optional[Array[String]],
+      'sha1'   => Optional[Array[String]],
+      'hash'   => Optional[Array[String]],
+      'key'    => Optional[Array[String]],
+    }
+  ]`
+
+data structure matching a modern krl input file
+some versions of openssh do not support sha256, however
+
+Default value: `{}`
+
 ### `openssh::authorized_keys`
 
-calls create_rsources on the ssh_authorized_keys hash
+calls create_resources on the ssh_authorized_keys hash
 
 ### `openssh::config`
 
@@ -352,6 +385,18 @@ install packages as needed
 
 use a template to create a non-hashed known hosts file
 use a shell script to create a hashed version
+
+### `openssh::krl`
+
+create a kernel revocation list, configure openssh to use it
+
+#### Examples
+
+##### 
+
+```puppet
+include openssh::krl
+```
 
 ### `openssh::service`
 
@@ -385,7 +430,7 @@ The following parameters are available in the `openssh::keypair` defined type.
 
 ##### `keytype`
 
-Data type: `Enum['rsa1','rsa','dsa','ecdsa','ed25519']`
+Data type: `Enum['rsa','dsa','ecdsa','ed25519']`
 
 ssh key type, rsa, ecdsa, etc.
 
