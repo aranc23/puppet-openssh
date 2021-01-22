@@ -81,6 +81,12 @@
 # @param krl
 #   data structure matching a modern krl input file
 #   some versions of openssh do not support sha256, however
+# @param manage_trusted_user_ca_keys
+#   manage the file and the contents of the file, enable the option
+# @param trusted_user_ca_keys_path
+#   path to the file to use for trusted ca users
+# @param trusted_user_ca_keys
+#   these are just ssh_authorized_key resources, with a target of trusted_user_ca_keys_path
 # 
 # @example
 #   include openssh
@@ -164,20 +170,22 @@ class openssh
     }
   ] $krl = {},
   Stdlib::Absolutepath $krl_path = '/etc/ssh/krl',
+  Boolean $manage_trusted_user_ca_keys = false,
+  Stdlib::Absolutepath $trusted_user_ca_keys_path = '/etc/ssh/trusted_user_ca_keys.pub',
+  Hash $trusted_user_ca_keys = {},
 )
 {
   contain openssh::install
-  contain openssh::known_hosts
   contain openssh::config
-  contain openssh::krl
-  contain openssh::authorized_keys
   contain openssh::service
   contain openssh::ssh_config
+  contain openssh::known_hosts
+  contain openssh::authorized_keys
+
   Class['::openssh::install']
-  -> Class['::openssh::known_hosts']
   -> Class['::openssh::config']
-  -> Class['::openssh::krl']
-  -> Class['::openssh::authorized_keys']
   ~> Class['::openssh::service']
   include openssh::ssh_config
+  include openssh::known_hosts
+  include openssh::authorized_keys
 }

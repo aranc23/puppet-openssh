@@ -11,7 +11,6 @@
 * [`openssh::config`](#opensshconfig): configure openssh, install ssh keys, etc.
 * [`openssh::install`](#opensshinstall): install packages as needed
 * [`openssh::known_hosts`](#opensshknown_hosts): manage hashed known hosts file
-* [`openssh::krl`](#opensshkrl): create a kernel revocation list, configure openssh to use it
 * [`openssh::service`](#opensshservice): control the openssh service
 * [`openssh::ssh_config`](#opensshssh_config): create ssh_config resources
 
@@ -369,6 +368,30 @@ some versions of openssh do not support sha256, however
 
 Default value: `{}`
 
+##### `manage_trusted_user_ca_keys`
+
+Data type: `Boolean`
+
+manage the file and the contents of the file, enable the option
+
+Default value: ``false``
+
+##### `trusted_user_ca_keys_path`
+
+Data type: `Stdlib::Absolutepath`
+
+path to the file to use for trusted ca users
+
+Default value: `'/etc/ssh/trusted_user_ca_keys.pub'`
+
+##### `trusted_user_ca_keys`
+
+Data type: `Hash`
+
+these are just ssh_authorized_key resources, with a target of trusted_user_ca_keys_path
+
+Default value: `{}`
+
 ### `openssh::authorized_keys`
 
 calls create_resources on the ssh_authorized_keys hash
@@ -385,18 +408,6 @@ install packages as needed
 
 use a template to create a non-hashed known hosts file
 use a shell script to create a hashed version
-
-### `openssh::krl`
-
-create a kernel revocation list, configure openssh to use it
-
-#### Examples
-
-##### 
-
-```puppet
-include openssh::krl
-```
 
 ### `openssh::service`
 

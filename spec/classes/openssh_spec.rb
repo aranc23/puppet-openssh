@@ -10,7 +10,7 @@ describe 'openssh' do
     #   }
     # end
 
-    it { is_expected.to have_class_count(8) }
+    it { is_expected.to have_class_count(7) }
     it { is_expected.to contain_class('openssh::install') }
     it { is_expected.to contain_class('openssh::config') }
     it { is_expected.to contain_class('openssh::service') }
@@ -27,6 +27,7 @@ describe 'openssh' do
     it { is_expected.not_to contain_file('/etc/ssh/krl.txt') }
     it { is_expected.not_to contain_sshd_config('RevokedKeys') }
     it { is_expected.not_to contain_exec('ssh-keygen -k -f /etc/ssh/krl /etc/ssh/krl.txt') }
+    it { is_expected.not_to contain_sshd_config('TrustedUserCAKeys') }
   end
   context 'manage the krl' do
     let(:params) do
@@ -41,6 +42,20 @@ describe 'openssh' do
     it { is_expected.to contain_file('/etc/ssh/revoked.txt') }
     it { is_expected.to contain_sshd_config('RevokedKeys') }
     it { is_expected.to contain_exec('ssh-keygen -k -f /etc/ssh/revoked /etc/ssh/revoked.txt') }
+  end
+  context 'manage the the trusted user ca keys' do
+    let(:params) do
+      {
+        manage_trusted_user_ca_keys: true,
+        trusted_user_ca_keys_path: '/etc/ssh/my_ca.pub',
+        trusted_user_ca_keys: {
+          'ca@some' => { type: 'ssh-rsa', key: 'some key' },
+        },
+      }
+    end
+
+    it { is_expected.to contain_sshd_config('TrustedUserCAKeys') }
+    it { is_expected.to contain_ssh_authorized_key('ca@some').with(type: 'ssh-rsa', key: 'some key', target: '/etc/ssh/my_ca.pub', user: 'root') }
   end
   context 'configure sshd and ssh client' do
     let(:params) do
