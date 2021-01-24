@@ -1,6 +1,6 @@
 {
   "name": "aranc23-openssh",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "author": "Aran Cox",
   "summary": "install openssh and configure using augeas",
   "license": "Apache-2.0",
