@@ -258,34 +258,7 @@ Default value: `{}`
 
 ##### `sshkeys`
 
-Data type: `Hash[String,Struct[{
-    'host_aliases' => Optional[Array[String]],
-    'type'         => Enum[
-      'ssh-dss',
-      'ssh-rsa',
-      'ecdsa-sha2-nistp256',
-      'ecdsa-sha2-nistp384',
-      'ecdsa-sha2-nistp521',
-      'ssh-ed25519',
-    ],
-    'tag'          => Optional[
-      Enum[
-        'ssh-dss',
-        'ssh-rsa',
-        'ecdsa-sha2-nistp256',
-        'ecdsa-sha2-nistp384',
-        'ecdsa-sha2-nistp521',
-        'ssh-ed25519',
-      ]
-    ],
-    'key'          => String,
-    'ensure'       => Optional[Enum['present','absent']],
-    'marker'       => Optional[Enum['cert-authority','revoked']],
-  }]]`
-
 ssh public keys to place in known hosts file, similar in structure to sshkey resource but supports markers
-
-Default value: `{}`
 
 ##### `supported_key_types`
 
@@ -392,6 +365,32 @@ Data type: `Hash`
 these are just ssh_authorized_key resources, with a target of trusted_user_ca_keys_path
 
 Default value: `{}`
+
+##### `known_hosts`
+
+Data type: `Hash[Stdlib::Fqdn,Struct[{
+    'host_aliases'        => Optional[Array[String]],
+    'ssh-dss'             => Optional[String],
+    'ssh-rsa'             => Optional[String],
+    'ecdsa-sha2-nistp256' => Optional[String],
+    'ecdsa-sha2-nistp384' => Optional[String],
+    'ecdsa-sha2-nistp521' => Optional[String],
+    'ssh-ed25519'  => Optional[String],
+    'ensure'       => Optional[Enum['present','absent']],
+    'marker'       => Optional[Enum['cert-authority','revoked']],
+  }]]`
+
+
+
+Default value: `{}`
+
+##### `known_hosts_source`
+
+Data type: `Optional[Stdlib::Filesource]`
+
+
+
+Default value: ``undef``
 
 ### `openssh::authorized_keys`
 

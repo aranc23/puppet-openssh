@@ -108,6 +108,18 @@ class openssh
   Boolean $manage_known_hosts = false,
   Boolean $hash_known_hosts = true,
   Stdlib::Absolutepath $known_hosts_path = '/etc/ssh/ssh_known_hosts',
+  Hash[Stdlib::Fqdn,Struct[{
+    'host_aliases'        => Optional[Array[String]],
+    'ssh-dss'             => Optional[String],
+    'ssh-rsa'             => Optional[String],
+    'ecdsa-sha2-nistp256' => Optional[String],
+    'ecdsa-sha2-nistp384' => Optional[String],
+    'ecdsa-sha2-nistp521' => Optional[String],
+    'ssh-ed25519'  => Optional[String],
+    'ensure'       => Optional[Enum['present','absent']],
+    'marker'       => Optional[Enum['cert-authority','revoked']],
+  }]] $known_hosts = {},
+  Optional[Stdlib::Filesource] $known_hosts_source = undef,
   Optional[Array[String]] $packages,
   # mode and group for ssh private keys
   Stdlib::Filemode $private_key_mode = '0600',
@@ -129,30 +141,6 @@ class openssh
   Variant[String,Undef] $ed25519_public_key = undef,
   Variant[String,Undef] $ed25519_public_cert = undef,
   Hash $ssh_authorized_keys = {},
-  Hash[String,Struct[{
-    'host_aliases' => Optional[Array[String]],
-    'type'         => Enum[
-      'ssh-dss',
-      'ssh-rsa',
-      'ecdsa-sha2-nistp256',
-      'ecdsa-sha2-nistp384',
-      'ecdsa-sha2-nistp521',
-      'ssh-ed25519',
-    ],
-    'tag'          => Optional[
-      Enum[
-        'ssh-dss',
-        'ssh-rsa',
-        'ecdsa-sha2-nistp256',
-        'ecdsa-sha2-nistp384',
-        'ecdsa-sha2-nistp521',
-        'ssh-ed25519',
-      ]
-    ],
-    'key'          => String,
-    'ensure'       => Optional[Enum['present','absent']],
-    'marker'       => Optional[Enum['cert-authority','revoked']],
-  }]] $sshkeys = {},
   Array[Enum[
     'rsa',
     'dsa',

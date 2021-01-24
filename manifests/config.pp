@@ -39,7 +39,7 @@ class openssh::config
         owner  => 'root',
         group  => 0,
         mode   => '0644',
-        source => $openssh::krl_source, 
+        source => $openssh::krl_source,
       }
     }
     else {

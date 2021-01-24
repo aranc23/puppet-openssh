@@ -1,16 +1,18 @@
 # managed by puppet, contents will be replaced
 <% type_map = scope['openssh::type_to_type'] -%>
-<% @keys.sort_by { |title,keydata| title }.each do |title,keydata| -%>
-<% if ! keydata.has_key?('ensure') or keydata['ensure'] != 'absent' and scope['openssh::supported_key_types'].include?(type_map[keydata['type']]) -%>
+<% @keys.sort_by { |fqdn,keydata| fqdn }.each do |fqdn,keydata| -%>
+<% type_map.each do |t,k| -%>
+<% if ! keydata.has_key?('ensure') or keydata['ensure'] != 'absent' and keydata.has_key?(t) and scope['openssh::supported_key_types'].include?(k) -%>
 <% if keydata.has_key?('marker') -%>
 <%= "@" + keydata['marker'] + " " -%>
 <% end -%>
 <% if keydata.has_key?('host_aliases') -%>
-<%= title %>,<%= keydata['host_aliases'].join(',') + " " -%>
+<%= fqdn %>,<%= keydata['host_aliases'].join(',') + " " -%>
 <% else -%>
-<%= "#{title} " %>
+<%= "#{fqdn} " %>
 <% end -%>
-<%= keydata['type'] + " " -%>
-<%= keydata['key'] + " " %>
+<%= t + " " -%>
+<%= keydata[t] + " " %>
+<% end -%>
 <% end -%>
 <% end -%>

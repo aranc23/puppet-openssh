@@ -7,7 +7,17 @@ class openssh::known_hosts
 )
 {
   if($::openssh::manage_known_hosts == true) {
-    if($openssh::hash_known_hosts) {
+    # just hammer in the source file
+    if($::openssh::known_hosts_source) {
+      file { $::openssh::known_hosts_path:
+        owner  => 'root',
+        group  => 0,
+        mode   => '0644',
+        source => $::openssh::known_hosts_source,
+      }
+    }
+    # hash the known hosts entries into place
+    elsif($openssh::hash_known_hosts) {
       file { $::openssh::known_hosts_path:
         owner   => 'root',
         group   => 0,
@@ -15,7 +25,7 @@ class openssh::known_hosts
         replace => false,
         content => "#managed by puppet\n"
       }
-      $keys = $openssh::sshkeys
+      $keys = $openssh::known_hosts
       file { "${::openssh::known_hosts_path}.unhashed":
         owner     => 'root',
         group     => 0,
@@ -45,8 +55,9 @@ class openssh::known_hosts
         refreshonly => true,
       }
     }
+    # don't hash and don't specify the source, just write the entries into a file
     else {
-      $keys = $openssh::sshkeys
+      $keys = $openssh::known_hosts
       file { $::openssh::known_hosts_path:
         owner   => 'root',
         group   => 0,

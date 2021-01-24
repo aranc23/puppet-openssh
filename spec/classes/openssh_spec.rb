@@ -24,6 +24,7 @@ describe 'openssh' do
                                                                            'source' => 'puppet:///modules/openssh/validate_public_cert.sh')
     }
     it { is_expected.not_to contain_file('/etc/ssh/krl') }
+    it { is_expected.not_to contain_file('/etc/ssh/ssh_known_hosts') }
     it { is_expected.not_to contain_sshd_config('RevokedKeys') }
     it { is_expected.not_to contain_sshd_config('TrustedUserCAKeys') }
   end
@@ -96,6 +97,46 @@ describe 'openssh' do
     end
 
     it { is_expected.to contain_file('/etc/ssh/banner').with_content('logins are logged') }
+  end
+  context 'manage known hosts with source' do
+    let(:params) do
+      {
+        manage_known_hosts: true,
+        known_hosts_source: 'http://example.com/known_hosts',
+        known_hosts_path: '/etc/ssh/other_hosts',
+        known_hosts: { 'example.com' => { 'host_aliases' => ['examp'], 'ssh-rsa' => 'rsa key', 'ssh-dss' => 'dsa key', 'marker' => 'cert-authority' } },
+        hash_known_hosts: true,
+      }
+    end
+
+    it { is_expected.to contain_file('/etc/ssh/other_hosts').with(mode: '0644', source: 'http://example.com/known_hosts') }
+  end
+  context 'manage hashed known hosts' do
+    let(:params) do
+      {
+        manage_known_hosts: true,
+        known_hosts_path: '/etc/ssh/other_hosts',
+        known_hosts: { 'example.com' => { 'host_aliases' => ['examp'], 'ssh-rsa' => 'rsa key', 'ssh-dss' => 'dsa key', 'marker' => 'cert-authority' } },
+        hash_known_hosts: true,
+      }
+    end
+
+    it { is_expected.to contain_file('/etc/ssh/other_hosts.unhashed').with(mode: '0600').with_content(%r{example.com}) }
+    it { is_expected.to contain_file('/etc/ssh/other_hosts').with(mode: '0644') }
+    it { is_expected.to contain_file('/etc/ssh/other_hosts.sh').with(mode: '0700') }
+    it { is_expected.to contain_exec('/etc/ssh/other_hosts.sh') }
+  end
+  context 'manage unhashed known hosts' do
+    let(:params) do
+      {
+        manage_known_hosts: true,
+        known_hosts_path: '/etc/ssh/other_hosts',
+        known_hosts: { 'example.com' => { 'host_aliases' => ['examp'], 'ssh-rsa' => 'rsa key', 'ssh-dss' => 'dsa key', 'marker' => 'cert-authority' } },
+        hash_known_hosts: false,
+      }
+    end
+
+    it { is_expected.to contain_file('/etc/ssh/other_hosts').with(mode: '0644').with_content(%r{example.com}) }
   end
   on_supported_os.each do |os, os_facts|
     context "on #{os}" do
