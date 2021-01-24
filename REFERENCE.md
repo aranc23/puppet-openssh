@@ -340,7 +340,7 @@ map used to turn full ssh key types into short names (ssh-rsa => rsa), used inte
 
 Data type: `Boolean`
 
-create a krl fill and process it with ssh-keygen, also sets RevokedKeys paramter
+manage the krl file at the given path, and enable the RevokedKeys configuration option
 
 Default value: ``false``
 
@@ -348,25 +348,26 @@ Default value: ``false``
 
 Data type: `Stdlib::Absolutepath`
 
-path to krl file to create
+path to krl file to manage
 
 Default value: `'/etc/ssh/krl'`
 
 ##### `krl`
 
-Data type: `Struct[
-    {
-      'sha256' => Optional[Array[String]],
-      'sha1'   => Optional[Array[String]],
-      'hash'   => Optional[Array[String]],
-      'key'    => Optional[Array[String]],
-    }
-  ]`
+Data type: `Hash`
 
-data structure matching a modern krl input file
-some versions of openssh do not support sha256, however
+these are ssh_authorized_key resources, but placed into the krl_path
 
 Default value: `{}`
+
+##### `krl_source`
+
+Data type: `Optional[Stdlib::Filesource]`
+
+source of the krl file (puppet:///, http://, etc,)
+if this is set to a valid puppet file source, do not create the keys in the krl parameter, instead use the file from this source
+
+Default value: ``undef``
 
 ##### `manage_trusted_user_ca_keys`
 

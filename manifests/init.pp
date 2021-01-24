@@ -75,12 +75,14 @@
 # @param type_to_type
 #   map used to turn full ssh key types into short names (ssh-rsa => rsa), used internally do not modify
 # @param manage_krl
-#   create a krl fill and process it with ssh-keygen, also sets RevokedKeys paramter
+#   manage the krl file at the given path, and enable the RevokedKeys configuration option
 # @param krl_path
-#   path to krl file to create
+#   path to krl file to manage
 # @param krl
-#   data structure matching a modern krl input file
-#   some versions of openssh do not support sha256, however
+#   these are ssh_authorized_key resources, but placed into the krl_path
+# @param krl_source
+#   source of the krl file (puppet:///, http://, etc,)
+#   if this is set to a valid puppet file source, do not create the keys in the krl parameter, instead use the file from this source
 # @param manage_trusted_user_ca_keys
 #   manage the file and the contents of the file, enable the option
 # @param trusted_user_ca_keys_path
@@ -161,15 +163,9 @@ class openssh
   Variant[Enum['running','stopped'],Undef] $service_ensure = 'running',
   Variant[Boolean,Undef] $service_enable = true,
   Boolean $manage_krl = false,
-  Struct[
-    {
-      'sha256' => Optional[Array[String]],
-      'sha1'   => Optional[Array[String]],
-      'hash'   => Optional[Array[String]],
-      'key'    => Optional[Array[String]],
-    }
-  ] $krl = {},
+  Hash $krl = {},
   Stdlib::Absolutepath $krl_path = '/etc/ssh/krl',
+  Optional[Stdlib::Filesource] $krl_source = undef,
   Boolean $manage_trusted_user_ca_keys = false,
   Stdlib::Absolutepath $trusted_user_ca_keys_path = '/etc/ssh/trusted_user_ca_keys.pub',
   Hash $trusted_user_ca_keys = {},
