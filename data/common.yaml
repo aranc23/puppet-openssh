@@ -11,7 +11,7 @@ lookup_options:
   openssh::ssh_authorized_keys:
     merge:
       strategy: hash
-  openssh::sshkeys:
+  openssh::known_hosts:
     merge:
       strategy: hash
 
