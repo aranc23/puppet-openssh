@@ -10,10 +10,11 @@ class openssh::known_hosts
     # just hammer in the source file
     if($::openssh::known_hosts_source) {
       file { $::openssh::known_hosts_path:
-        owner  => 'root',
-        group  => 0,
-        mode   => '0644',
-        source => $::openssh::known_hosts_source,
+        owner     => 'root',
+        group     => 0,
+        mode      => '0644',
+        source    => $::openssh::known_hosts_source,
+        show_diff => false,
       }
     }
     # hash the known hosts entries into place
