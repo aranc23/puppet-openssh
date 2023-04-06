@@ -9,7 +9,7 @@
 <% if keydata.has_key?('host_aliases') -%>
 <%= fqdn %>,<%= keydata['host_aliases'].join(',') + " " -%>
 <% else -%>
-<%= "#{fqdn} " %>
+<%= "#{fqdn} " -%>
 <% end -%>
 <%= t + " " -%>
 <%= keydata[t] + " " %>
