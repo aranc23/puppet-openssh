@@ -108,7 +108,7 @@ class openssh
   Boolean $manage_known_hosts = false,
   Boolean $hash_known_hosts = true,
   Stdlib::Absolutepath $known_hosts_path = '/etc/ssh/ssh_known_hosts',
-  Hash[Stdlib::Fqdn,Struct[{
+  Hash[Variant[Stdlib::Fqdn,Pattern['\A\*']],Struct[{
     'host_aliases'        => Optional[Array[String]],
     'ssh-dss'             => Optional[String],
     'ssh-rsa'             => Optional[String],
