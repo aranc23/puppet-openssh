@@ -35,20 +35,12 @@ class openssh::known_hosts
         notify    => Exec['hash_known_hosts'],
         show_diff => false,
       }
-      $hash_known_hosts_template = @(HASHTEMPLATE)
-      #! /bin/bash -e
-      known_hosts=<%= scope['openssh::known_hosts_path'] %>
-      cp -f "${known_hosts}.unhashed" $known_hosts
-      ssh-keygen -H -f $known_hosts
-      rm -f "${known_hosts}.old"
-      chmod 0644 $known_hosts
-      | HASHTEMPLATE
       $hash_script = "${::openssh::known_hosts_path}.sh"
       file { $hash_script:
         owner   => root,
         mode    => '0700',
         group   => 0,
-        content => inline_template($hash_known_hosts_template),
+        content => template('openssh/ssh_known_hosts.sh.erb'),
       }
       exec { $hash_script:
         require     => File[$hash_script],
