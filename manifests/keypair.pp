@@ -76,6 +76,11 @@ define openssh::keypair
       group   => 0,
       content => $public_key_string,
     }
+    exec { "/bin/rm -f ${ssh_etc}/${key}-cert.pub":
+      subscribe   => File["${ssh_etc}/${key}.pub"],
+      refreshonly => true,
+      unless      => "${ssh_etc}/validate_public_cert.sh ${ssh_etc}/${key}.pub ${ssh_etc}/${key}-cert.pub",
+    }
   }
   if($public_cert) {
     file { "${ssh_etc}/${key}-cert.pub":
