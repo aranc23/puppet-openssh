@@ -1,6 +1,6 @@
 {
   "name": "aranc23-openssh",
-  "version": "0.4.6",
+  "version": "0.4.7",
   "author": "Aran Cox",
   "summary": "install openssh and configure using augeas",
   "license": "Apache-2.0",
@@ -18,52 +18,40 @@
         "7"
       ]
     },
-    // {
-    //   "operatingsystem": "OracleLinux",
-    //   "operatingsystemrelease": [
-    //     "7"
-    //   ]
-    // },
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
         "8"
       ]
     },
-    // {
-    //   "operatingsystem": "Scientific",
-    //   "operatingsystemrelease": [
-    //     "7"
-    //   ]
-    // },
+    {
+      "operatingsystem": "RockyLinux",
+      "operatingsystemrelease": [
+        "8"
+      ]
+    },
     {
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
-        "9"
+        "12"
       ]
     },
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
-        "18.04"
+          "20.04", "22.04", "24.04"
       ]
     },
     {
       "operatingsystem": "Fedora",
       "operatingsystemrelease": [
-        "32"
+        "38"
       ]
     },
     {
       "operatingsystem": "Fedora",
       "operatingsystemrelease": [
-        "33"
-      ]
-    },
-    {
-      "operatingsystem": "SLES",
-      "operatingsystemrelease": [
-        "15"
+        "40"
       ]
     }
   ],
