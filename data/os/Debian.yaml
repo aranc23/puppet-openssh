@@ -2,3 +2,5 @@
 openssh::packages:
 - openssh-server
 - openssh-client
+openssh::service: 'ssh'
+
