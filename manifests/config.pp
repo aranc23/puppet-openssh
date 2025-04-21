@@ -31,23 +31,29 @@ class openssh::config
     }
   }
   if($openssh::manage_krl) {
+    $krl_temp = "${openssh::krl_path}.in"
     sshd_config { 'RevokedKeys':
       value => $openssh::krl_path,
     }
     if($openssh::krl_source) {
-      file { $openssh::krl_path:
+      file { $krl_temp:
         owner  => 'root',
         group  => 0,
         mode   => '0644',
         source => $openssh::krl_source,
+        notify => Exec['ssh-keygen-krl'],
       }
     }
     else {
       create_resources(
         'ssh_authorized_key',
         $openssh::krl,
-        { user => 'root', target => $openssh::krl_path },
+        { user => 'root', target => $krl_temp, notify => Exec['ssh-keygen-krl'] },
       )
+    }
+    exec { "/usr/bin/ssh-keygen -k -f ${openssh::krl_path} ${krl_temp}":
+      alias       => 'ssh-keygen-krl',
+      refreshonly => true,
     }
   }
   if($openssh::manage_trusted_user_ca_keys) {
