@@ -34,22 +34,38 @@ class openssh::config
     sshd_config { 'RevokedKeys':
       value => $openssh::krl_path,
     }
+    $_krl = $openssh::process_krl ? {
+      true  => "${openssh::krl_path}.in",
+      false => $openssh::krl_path,
+    }
     if($openssh::krl_source) {
-      file { $openssh::krl_path:
+      file { $_krl:
         owner  => 'root',
         group  => 0,
         mode   => '0644',
         source => $openssh::krl_source,
+        notify => $openssh::process_krl ? {
+          true    => Exec['ssh-keygen-krl'],
+          default => undef,
+        }
       }
     }
     else {
-      $krl_temp = "${openssh::krl_path}.in"
       create_resources(
         'ssh_authorized_key',
         $openssh::krl,
-        { user => 'root', target => $krl_temp, notify => Exec['ssh-keygen-krl'] },
+        {
+          user => 'root',
+          target => $_krl,
+          notify => $openssh::process_krl ? {
+            true    => Exec['ssh-keygen-krl'],
+            default => undef,
+          },
+        }
       )
-      exec { "/usr/bin/ssh-keygen -k -f ${openssh::krl_path} ${krl_temp}":
+    }
+    if $openssh::process_krl {
+      exec { "/usr/bin/ssh-keygen -k -f ${openssh::krl_path} ${_krl}":
         alias       => 'ssh-keygen-krl',
         refreshonly => true,
       }

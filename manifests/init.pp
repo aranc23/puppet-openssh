@@ -83,6 +83,9 @@
 # @param krl_source
 #   source of the krl file (puppet:///, http://, etc,)
 #   if this is set to a valid puppet file source, do not create the keys in the krl parameter, instead use the file from this source
+# @param process_krl
+#   use ssh-keygen -k -f to turn the krl_source or krl resources into
+#   a binary krl file
 # @param manage_trusted_user_ca_keys
 #   manage the file and the contents of the file, enable the option
 # @param trusted_user_ca_keys_path
@@ -154,6 +157,7 @@ class openssh
   Hash $krl = {},
   Stdlib::Absolutepath $krl_path = '/etc/ssh/krl',
   Optional[Stdlib::Filesource] $krl_source = undef,
+  Boolean $process_krl = false,
   Boolean $manage_trusted_user_ca_keys = false,
   Stdlib::Absolutepath $trusted_user_ca_keys_path = '/etc/ssh/trusted_user_ca_keys.pub',
   Hash $trusted_user_ca_keys = {},
