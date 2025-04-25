@@ -1,6 +1,0 @@
----
-openssh::supported_key_types:
-  - 'rsa'
-  - 'dsa'
-  - 'ecdsa'
-  - 'ed25519'
