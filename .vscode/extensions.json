@@ -1,6 +1,8 @@
 {
   "recommendations": [
     "puppet.puppet-vscode",
-    "Shopify.ruby-lsp"
+    "Shopify.ruby-lsp",
+    "testdouble.vscode-standard-ruby",
+    "shopify.ruby-extensions-pack"
   ]
 }
