@@ -147,13 +147,14 @@ describe 'openssh' do
       end
 
       it { is_expected.to compile }
-      it { is_expected.to contain_service('sshd') }
       it { is_expected.to contain_package('openssh-server') }
 
       case os_facts[:osfamily]
       when 'Debian'
+        it { is_expected.to contain_service('ssh') }
         it { is_expected.to contain_package('openssh-client') }
       else
+        it { is_expected.to contain_service('sshd') }
         ['openssh', 'openssh-clients'].each do |p|
           it { is_expected.to contain_package(p) }
         end
