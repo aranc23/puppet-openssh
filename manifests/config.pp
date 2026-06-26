@@ -23,7 +23,7 @@ class openssh::config
   }
 
   $::openssh::supported_key_types.each |String $keytype| {
-    openssh::keypair { "${::fqdn} ${keytype} key":
+    openssh::keypair { "${trusted['certname'] ${keytype} key":
       keytype     => $keytype,
       private_key => lookup("openssh::${keytype}_private_key",Variant[String,Undef],'first',undef),
       public_key  => lookup("openssh::${keytype}_public_key",Variant[String,Undef],'first',undef),
