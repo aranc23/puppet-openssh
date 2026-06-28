@@ -22,7 +22,7 @@ class openssh::config
     }
   }
 
-  if ('rsa' in $openssh::supported_key_types && $openssh::rsa_private_key && $openssh::rsa_public_key) {
+  if ('rsa' in $openssh::supported_key_types and $openssh::rsa_private_key and $openssh::rsa_public_key) {
     openssh::keypair { "${trusted['certname'] rsa key":
       keytype     => 'rsa'
       private_key => $openssh::rsa_private_key,
@@ -30,7 +30,7 @@ class openssh::config
       public_cert => $openssh::rsa_public_cert,
     }
   }
-  if ('dsa' in $openssh::supported_key_types && $openssh::dsa_private_key && $openssh::dsa_public_key) {
+  if ('dsa' in $openssh::supported_key_types and $openssh::dsa_private_key and $openssh::dsa_public_key) {
     openssh::keypair { "${trusted['certname'] dsa key":
       keytype     => 'dsa'
       private_key => $openssh::dsa_private_key,
@@ -38,7 +38,7 @@ class openssh::config
       public_cert => $openssh::dsa_public_cert,
     }
   }
-  if ('ecdsa' in $openssh::supported_key_types && $openssh::ecdsa_private_key && $openssh::ecdsa_public_key) {
+  if ('ecdsa' in $openssh::supported_key_types and $openssh::ecdsa_private_key and $openssh::ecdsa_public_key) {
     openssh::keypair { "${trusted['certname'] ecdsa key":
       keytype     => 'ecdsa'
       private_key => $openssh::ecdsa_private_key,
@@ -46,7 +46,7 @@ class openssh::config
       public_cert => $openssh::ecdsa_public_cert,
     }
   }
-  if ('ed25519' in $openssh::supported_key_types && $openssh::ed25519_private_key && $openssh::ed25519_public_key) {
+  if ('ed25519' in $openssh::supported_key_types and $openssh::ed25519_private_key and $openssh::ed25519_public_key) {
     openssh::keypair { "${trusted['certname'] ed25519 key":
       keytype     => 'ed25519'
       private_key => $openssh::ed25519_private_key,
