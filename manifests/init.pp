@@ -163,7 +163,7 @@ class openssh
   Hash[Enum['rsa','dsa','ecdsa','ed25519'],Struct[{
     'private_key' => String,
     'public_key' => String,
-    'public_cert' = Optional[String],
+    'public_cert' => Optional[String],
   }]] $keypairs = {},
 )
 {
