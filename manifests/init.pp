@@ -92,11 +92,10 @@
 #   path to the file to use for trusted ca users
 # @param trusted_user_ca_keys
 #   these are just ssh_authorized_key resources, with a target of trusted_user_ca_keys_path
-# 
+# @param keypairs
+#   passed to keypairs defines
 # @example
 #   include openssh
-# @example README
-#   see the README for more complete examples
 class openssh
 (
   # internal use only, defined in global.yaml
@@ -161,6 +160,11 @@ class openssh
   Boolean $manage_trusted_user_ca_keys = false,
   Stdlib::Absolutepath $trusted_user_ca_keys_path = '/etc/ssh/trusted_user_ca_keys.pub',
   Hash $trusted_user_ca_keys = {},
+  Hash[Enum['rsa','dsa','ecdsa','ed25519'],Struct[{
+    'private_key' => String,
+    'public_key' => String,
+    'public_cert' = Optional[String],
+  }]] $keypairs = {},
 )
 {
   contain openssh::install

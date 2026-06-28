@@ -22,12 +22,44 @@ class openssh::config
     }
   }
 
-  $::openssh::supported_key_types.each |String $keytype| {
-    openssh::keypair { "${trusted['certname'] ${keytype} key":
-      keytype     => $keytype,
-      private_key => lookup("openssh::${keytype}_private_key",Variant[String,Undef],'first',undef),
-      public_key  => lookup("openssh::${keytype}_public_key",Variant[String,Undef],'first',undef),
-      public_cert => lookup("openssh::${keytype}_public_cert",Variant[String,Undef],'first',undef),
+  if ('rsa' in $openssh::supported_key_types && $openssh::rsa_private_key && $openssh::rsa_public_key) {
+    openssh::keypair { "${trusted['certname'] rsa key":
+      keytype     => 'rsa'
+      private_key => $openssh::rsa_private_key,
+      public_key  => $openssh::rsa_public_key,
+      public_cert => $openssh::rsa_public_cert,
+    }
+  }
+  if ('dsa' in $openssh::supported_key_types && $openssh::dsa_private_key && $openssh::dsa_public_key) {
+    openssh::keypair { "${trusted['certname'] dsa key":
+      keytype     => 'dsa'
+      private_key => $openssh::dsa_private_key,
+      public_key  => $openssh::dsa_public_key,
+      public_cert => $openssh::dsa_public_cert,
+    }
+  }
+  if ('ecdsa' in $openssh::supported_key_types && $openssh::ecdsa_private_key && $openssh::ecdsa_public_key) {
+    openssh::keypair { "${trusted['certname'] ecdsa key":
+      keytype     => 'ecdsa'
+      private_key => $openssh::ecdsa_private_key,
+      public_key  => $openssh::ecdsa_public_key,
+      public_cert => $openssh::ecdsa_public_cert,
+    }
+  }
+  if ('ed25519' in $openssh::supported_key_types && $openssh::ed25519_private_key && $openssh::ed25519_public_key) {
+    openssh::keypair { "${trusted['certname'] ed25519 key":
+      keytype     => 'ed25519'
+      private_key => $openssh::ed25519_private_key,
+      public_key  => $openssh::ed25519_public_key,
+      public_cert => $openssh::ed25519_public_cert,
+    }
+  }
+  $openssh::keypairs.each |String $t,Hash $kp| {
+    if $t in $openssh::supported_key_types {
+      openssh::keypair { "${trusted['certname'] ${t} key":
+        keytype => $t,
+        *       => $kp,
+      }
     }
   }
   if($openssh::manage_krl) {
