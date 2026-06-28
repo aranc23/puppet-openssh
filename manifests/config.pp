@@ -56,7 +56,7 @@ class openssh::config
   }
   $openssh::keypairs.each |String $t,Hash $kp| {
     if $t in $openssh::supported_key_types {
-      openssh::keypair { "${trusted['certname'] ${t} key":
+      openssh::keypair { "${trusted['certname']} ${t} key":
         keytype => $t,
         *       => $kp,
       }
