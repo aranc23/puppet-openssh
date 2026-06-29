@@ -178,13 +178,14 @@ describe 'openssh' do
             supported_key_types: ['rsa', 'dsa', 'ecdsa', 'ed25519'],
           }
         end
+        pubs = { 'owner' => 'root', 'group' => 0, 'mode' => '0644' }
 
         withs =
           case os_facts[:osfamily]
           when 'RedHat'
-            case os_facts[:operatingsystemmajrelease]
-            when ['5', '6']
-              # old red hats
+            case os_facts[:name]
+            when 'Fedora'
+              # all the other hats
               {
                 'mode'  => '0600',
                 'owner' => 'root',
@@ -199,7 +200,7 @@ describe 'openssh' do
               }
             end
           else
-            # all the other hats
+            # all the other non-hats
             {
               'mode'  => '0600',
               'owner' => 'root',
@@ -208,6 +209,9 @@ describe 'openssh' do
           end
         ['rsa', 'dsa', 'ecdsa', 'ed25519'].each do |keytype|
           it { is_expected.to contain_openssh__keypair("test.example.com #{keytype} key").with(withs.merge('keytype' => keytype)) }
+          it { is_expected.to contain_file("/etc/ssh/ssh_host_#{keytype}_key").with(withs) }
+          it { is_expected.to contain_file("/etc/ssh/ssh_host_#{keytype}_key-cert.pub").with(pubs) }
+          it { is_expected.to contain_file("/etc/ssh/ssh_host_#{keytype}_key.pub").with(pubs) }
         end
       end
     end
