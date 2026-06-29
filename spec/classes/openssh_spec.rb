@@ -97,6 +97,7 @@ describe 'openssh' do
     end
 
     it { is_expected.to contain_file('/etc/ssh/banner').with_content('logins are logged') }
+    it { is_expected.to contain_sshd_config('Banner') }
   end
   context 'manage known hosts with source' do
     let(:params) do
